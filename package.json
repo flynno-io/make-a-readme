@@ -1,0 +1,16 @@
+{
+	"name": "make-a-readme",
+	"version": "1.0.0",
+	"description": "A CLI for generating a high-quality README.md from your command line",
+	"main": "index.js",
+	"type": "module",
+	"scripts": {
+        "start": "node index.js",
+		"test": "echo \"Error: no test specified\" && exit 1"
+	},
+	"author": "Luke L. Flynn",
+	"license": "ISC",
+	"dependencies": {
+		"inquirer": "8.2.4"
+	}
+}

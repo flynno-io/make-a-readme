@@ -1,0 +1,13 @@
+MIT
+Apache 2.0
+BSD (3-Clause, 2-Clause)
+Unlicense
+GNU General Public (GPL) 2.0 & 3.0
+GNU Lesser General Public (LGPL)
+Affero General Public (AGPL)
+Mozilla Public (MPL)
+Microsoft Public (Ms-PL)
+Common Development and Distribution (CDDL)
+Eclipse Public (EPL)
+Creative Commons Zero (CC0)
+Dual Licensing
