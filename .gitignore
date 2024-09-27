@@ -28,3 +28,4 @@ Temporary Items
 # Development directories and files
 node_modules
 todo.js
+.vscode
