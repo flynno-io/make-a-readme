@@ -2,6 +2,7 @@ const licenseChoices = [
 	{
 		id: 1,
 		name: "The Hippocratic License 3.0",
+        value: "Hippo3.0",
 		description:
 			"A permissive license that prohibits the use of the software in violation of human rights.",
 		badge:
@@ -10,6 +11,7 @@ const licenseChoices = [
 	{
 		id: 2,
 		name: "Apache 2.0",
+        value: "Apache2.0",
 		description:
 			"A permissive license allowing for reuse, modification, and distribution, with a requirement to provide attribution and state changes.",
 		badge:
@@ -18,6 +20,7 @@ const licenseChoices = [
 	{
 		id: 3,
 		name: "BSD (3-Clause, 2-Clause)",
+        value: "BSD",
 		description:
 			"Permissive licenses allowing free redistribution and use, with attribution required; the 3-Clause version adds a non-endorsement clause.",
 		badge:
@@ -26,6 +29,7 @@ const licenseChoices = [
 	{
 		id: 1,
 		name: "Boost Software License 1.0",
+        value: "Boost1.0",
 		description:
 			"A simple, permissive license allowing use and distribution with minimal restrictions",
 		badge:
@@ -34,6 +38,7 @@ const licenseChoices = [
 	{
 		id: 4,
 		name: "Common Development and Distribution (CDDL)",
+        value: "CDDL",
 		description:
 			"A weak copyleft license allowing open-source distribution, with a requirement to release modifications to the licensed code.",
 		badge: "insert",
@@ -41,6 +46,7 @@ const licenseChoices = [
 	{
 		id: 5,
 		name: "Creative Commons Zero (CC0)",
+        value: "CC0",
 		description:
 			"A public domain dedication, allowing use of the work without any restrictions or attribution requirements.",
 		badge:
@@ -49,6 +55,7 @@ const licenseChoices = [
 	{
 		id: 6,
 		name: "ISC License (ISC)",
+        value: "ISC",
 		description: "text",
 		badge:
 			"[![License: ISC](https://img.shields.io/badge/License-ISC-blue.svg)](https://opensource.org/licenses/ISC)",
@@ -56,6 +63,7 @@ const licenseChoices = [
 	{
 		id: 7,
 		name: "Eclipse Public (EPL)",
+        value: "EPL",
 		description:
 			"A weak copyleft license requiring modifications to be shared when distributed, but allowing combination with proprietary code.",
 		badge:
@@ -64,6 +72,7 @@ const licenseChoices = [
 	{
 		id: 8,
 		name: "GNU Affero General Public License v3",
+        value: "Affero3.0",
 		description:
 			"A strong copyleft license requiring source code disclosure for both modified versions and software used over a network.",
 		badge:
@@ -72,6 +81,7 @@ const licenseChoices = [
 	{
 		id: 9,
 		name: "GNU Lesser General Public (LGPL)",
+        value: "LGPL",
 		description:
 			"A weak copyleft license allowing the use of libraries in proprietary software, but requiring changes to the LGPL-licensed code to be open.",
 		badge:
@@ -80,6 +90,7 @@ const licenseChoices = [
 	{
 		id: 10,
 		name: "IBM Public License Version 1.0",
+        value: "IBM1.0",
 		description:
 			"A weak copyleft license requiring modifications to be open source, with certain liability and patent protections.",
 		badge:
@@ -88,6 +99,7 @@ const licenseChoices = [
 	{
 		id: 1,
 		name: "MIT",
+        value: "MIT",
 		description:
 			"A permissive license allowing free use, modification, and distribution, with minimal requirements for attribution.",
 		badge:
@@ -96,6 +108,7 @@ const licenseChoices = [
 	{
 		id: 11,
 		name: "Mozilla Public (MPL)",
+        value: "MPL",
 		description:
 			"A weak copyleft license requiring modified files to remain open-source while allowing combination with proprietary code.",
 		badge:
@@ -104,6 +117,7 @@ const licenseChoices = [
 	{
 		id: 12,
 		name: "SIL Open Font License 1.1",
+        value: "SIL1.1",
 		description:
 			"A permissive license specifically for fonts, allowing use, modification, and redistribution, with attribution.",
 		badge:
@@ -112,6 +126,7 @@ const licenseChoices = [
 	{
 		id: 13,
 		name: "Unlicense",
+        value: "Uni",
 		description:
 			"A public domain equivalent license that allows use, modification, and distribution without any restrictions.",
 		badge:
