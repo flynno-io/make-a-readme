@@ -80,12 +80,25 @@ function renderLicenseSection(license) {
     // add renderLicenseBadge()
 }
 
-function renderSponsors(names, logos) {
-    // return
-}
+function renderTextAndImages(text, stringOfImages) {
+    let str = text
+    let counter = 0
 
-function renderInstallation(text, images) {
-    // return
+    function splitImagesIntoArray(stringOfImages) {
+        let images = stringOfImages.split(',')
+        images.forEach((img) => {
+            img.trim()
+        })
+        return imgs
+    }
+    const images = splitImagesIntoArray(stringOfImages)
+
+    while (str.indexOf('<img>', 0) !== 1) {
+        let image = `![alt application screenshot](assets/images/${images[counter]})`
+        str = str.replace('<img>', image)
+        counter += 1
+    }
+    return str
 }
 
 function renderCredits(names, links) {
@@ -95,7 +108,8 @@ function renderCredits(names, links) {
 // generates Markdown to be passed into the writeFile function
 function generateMarkdown(data) {
 	const markDown = `
-        # ${data.title} ${renderLicenseBadge(data.license)}
+        # ${data.title} 
+        ${renderLicenseBadge(data.license)}
         ${data.badges.join(" ")}
 
         ## Description
@@ -113,10 +127,10 @@ function generateMarkdown(data) {
         ${renderLicenseSection(data.license) ? '- [License](#license)' : ''}
 
         ## Installation
-        ${renderInstallation(data.installationText, data.installationImages)}
+        ${renderTextAndImages(data.installationText, data.installationImages)}
 
         ## Usage
-        ${data.usage}
+        ${renderTextAndImages(data.usageText, data.usageImages)}
 
         ## Credits
         ${renderCredits(data.creditsNames, data.creditsLinks)}
@@ -127,7 +141,7 @@ function generateMarkdown(data) {
 
         ${data.sections.includes('Testing') ? '## Testing\n' + data.testing : '' }
 
-        ${data.sections.includes('Sponsors') ? '## Sponsors\n' + renderSponsors(data.sponsorNames, data.sponsorLogos) : '' }
+        ${data.sections.includes('Sponsors') ? '## Sponsors\n' + renderTextAndImages(data.sponsorNames, data.sponsorLogos) : '' }
 
         ${renderLicenseSection(data.license)}
     `

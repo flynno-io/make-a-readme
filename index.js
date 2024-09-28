@@ -4,6 +4,7 @@ import fs from "node:fs"
 import generateMarkdown from "./utils/generateMarkdown.js"
 import licenseChoices from "./utils/licenseChoices.js"
 import badgeChoices from "./utils/badgeChoices.js"
+import { validCommaSeparatedString, validEmail } from "./utils/validationFunc.js"
 
 const prompts = [
 	{
@@ -13,120 +14,135 @@ const prompts = [
 			"Select what sections you want to include? (sections installation, usage, credits, questions, and license are included)",
 		choices: ["Badges", "Features", "Contributing", "Sponsors", "Testing"],
 		default: null,
+		prefix: "Sections",
 	},
 	{
 		name: "title",
 		type: "input",
 		message: "What is your application's name?",
+		prefix: "Title:",
 	},
 	{
 		name: "description",
 		type: "input",
 		message: "What is the motivation and value behind your application?",
+		prefix: "Description:",
 	},
 	{
 		name: "license",
 		type: "rawlist",
 		message: "What license do you want to use?",
 		choices: licenseChoices,
+		prefix: "License:",
 	},
 	{
 		name: "installationText",
 		type: "editor",
-		message: "How is the application installed? (provide numbered steps)",
+		message:
+			"How do you install the application?\nTo include images, use the '<img>' tag as a placeholder.\n In the next step, you will specify which images to add.",
 		prefix: "Installation (1of2):",
 	},
-    {
+	{
 		name: "installationImages",
 		type: "input",
-		message: "Add the path(s) to images (separated by commas) to include in the Installation section ",
+		message:
+			"Add the file names of the images you want in the order you want them (comma separated)\nNote: images must be in the path /assets/images/ to show correctly",
 		prefix: "Installation (2of2):",
+        validate: validCommaSeparatedString(input),
+		when: (answers) => answers.installationText.includes("<img>"),
 	},
 	{
 		name: "usageText",
 		type: "editor",
-		message: "How do you use the application? (provide numbered steps)",
+		message:
+			"How do you use the application?\nTo include images, use the '<img>' tag as a placeholder.\n In the next step, you will specify which images to add.",
+		prefix: "Usage (1of2):",
 	},
-    {
-		name: "usageImgs",
+	{
+		name: "usageImages",
 		type: "input",
-		message: "Add the path(s) to the image(s) you want to include in order they should appear in your usage section",
-        when: (answers) => answers.usageText.includes('<img>') === -1 ? false : true,
+		message:
+			"Add the file names of the images you want in the order you want them (comma separated)\nNote: images must be in the path /assets/images/ to show correctly",
+		prefix: "Usage (2of2):",
+        validate: validCommaSeparatedString(input),
+		when: (answers) => answers.usageText.includes("<img>"),
 	},
 	{
 		name: "creditsNames",
 		type: "input",
-		message: "Include the names of any contributors, comma separated (click enter for none)",
-        prefix: "Credits (1of2)",
-        default: ''
+		message:
+			"Include the names of any contributors, comma separated (click enter for none)",
+		prefix: "Credits (1of2):",
+        validate: validCommaSeparatedString(input),
+		default: null,
 	},
-    {
+	{
 		name: "creditsLinks",
 		type: "input",
-		message: "Include the Github URLs for each of your contributors (comma separated) in the order you entered them above",
-        prefix: "Credits (2of2)",
-        when: (answers) => Boolean(answers.creditsNames)
+		message:
+			"Include the Github URLs for each of your contributors (comma separated) in the order you entered them above",
+		prefix: "Credits (2of2):",
+        validate: validCommaSeparatedString(input),
+		when: (answers) => Boolean(answers.creditsNames),
 	},
-    {
+	{
+		name: "features",
 		type: "editor",
 		message: "What are the main features of the application?",
-		name: "features",
+		prefix: "Features:",
 		when: (answers) => answers.sections.includes("Features"),
 	},
 	{
+		name: "Contributing",
 		type: "editor",
 		message: "How do you contribute to the project?",
-		name: "Contributing",
+		prefix: "Contributing:",
 		when: (answers) => answers.sections.includes("Contributing"),
 	},
 	{
-		type: "editor",
-		message: "Describe how to test your application?",
 		name: "testing",
+		type: "editor",
+		message: "Outline how to test your application?",
+		prefix: "Testing:",
 		when: (answers) => answers.sections.includes("Testing"),
 	},
 	{
+		name: "badges",
 		type: "checkbox",
 		message: "What badges do you want?",
-		name: "badges",
-        choices: badgeChoices,
+		choices: badgeChoices,
+		prefix: "Badges:",
 		when: (answers) => answers.sections.includes("Badges"),
 	},
 	{
+		name: "sponsorNames",
 		type: "input",
 		message: "Add your sponsors (comma separated)",
-		name: "sponsorNames",
-        prefix: "Sponsors (1of2)",
+		prefix: "Sponsors (1of2):",
+        validate: validCommaSeparatedString(input),
 		when: (answers) => answers.sections.includes("Sponsors"),
 	},
 	{
-		type: "input",
-		message: "Add the logo paths for each of the sponsors in the order you entered previously (comma separated)",
 		name: "sponsorLogos",
-        prefix: "Sponsors (2of2)",
+		type: "input",
+		message:
+			"Add the file names of the logos you want in the sponsor order you added above (comma separated)\nNote: Logos must be in the path /assets/images/ to show correctly",
+		prefix: "Sponsors (2of2):",
+        validate: validCommaSeparatedString(input),
 		when: (answers) => answers.sections.includes("Sponsors"),
 	},
 	{
+		name: "github",
 		type: "input",
 		message: "What is your GitHub username?",
-		name: "github",
+        prefix: "Github Username:",
 	},
 	{
 		type: "input",
 		message: "What email should questions be sent to?",
 		name: "email",
-		validate: (input) => {
-			return new Promise((resolve, reject) => {
-				// Regular expression for basic email validation
-				const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-
-				if (emailRegex.test(input)) {
-					resolve(true) // Valid email
-				} else {
-					reject("Please enter a valid email address.") // Error message
-				}
-			})
-		},
+        prefix: "Questions:",
+		validate: validEmail(input),
 	},
 ]
 
@@ -147,7 +163,7 @@ function init() {
 	inquirer.prompt(prompts).then((a) => {
 		const markDown = generateMarkdown(a)
 
-        console.log(a)
+		console.log(a)
 
 		// generate the README.md file
 		writeToFile("results/README.md", markDown)
