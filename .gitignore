@@ -1,5 +1,5 @@
 # General
-.DS_Store
+.DS_Store/
 .AppleDouble
 .LSOverride
 
@@ -26,6 +26,6 @@ Temporary Items
 .apdisk
 
 # Development directories and files
-node_modules
+node_modules/
 todo.js
 .vscode

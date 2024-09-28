@@ -1,5 +1,5 @@
 # Make a README
 
 ## Description
-A CLI for generating a high-quality README.md from your command line
+A CLI for generating a high-quality README.md for your application
 
