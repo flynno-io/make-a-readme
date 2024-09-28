@@ -16,8 +16,8 @@ function renderLicenseBadge(license) {
         case "Boost1.0":
             licenseBadge = "[![License](https://img.shields.io/badge/License-Boost_1.0-lightblue.svg)](https://www.boost.org/LICENSE_1_0.txt)"
             break
-        case "CDDL":
-            licenseBadge = "![CDDL Badge](https://img.shields.io/badge/CDDL-025DF4?style=for-the-badge&logo=open-source-initiative&logoColor=white)"
+        case "AN 4.0 Int":
+            licenseBadge = "[![License: CC BY-NC 4.0](https://licensebuttons.net/l/by-nc/4.0/80x15.png)](https://creativecommons.org/licenses/by-nc/4.0/)"
             break
         case "CC0":
             licenseBadge = "[![License: CC0-1.0](https://licensebuttons.net/l/zero/1.0/80x15.png)](http://creativecommons.org/publicdomain/zero/1.0/)"
@@ -50,18 +50,31 @@ function renderLicenseBadge(license) {
             licenseBadge = "[![License: Unlicense](https://img.shields.io/badge/license-Unlicense-blue.svg)](http://unlicense.org/)"
             break
         default:
+            console.log('no license selected')
             licenseBadge = ''
     }
     return licenseBadge
 }
 
-// TODO: Create a function that returns the license link
-// If there is no license, return an empty string
-function renderLicenseLink(license) {}
+function renderLicenseLink(license) {
+    if (license) {
+        return `[${license}](LICENSE.txt)`
+    } else {
+        return ''
+    }
+}
 
-// TODO: Create a function that returns the license section of README
-// If there is no license, return an empty string
 function renderLicenseSection(license) {
+    if (license) {
+        return (
+            `
+            ## License
+            Licensed under the ${renderLicenseLink(license)} license.
+            `
+        )
+    } else {
+        return ''
+    }
     return 'rendered licenses section'
     // add renderLicenseLink()
     // add renderLicenseBadge()
@@ -71,7 +84,15 @@ function renderSponsors(names, logos) {
     // return
 }
 
-// TODO: Create a function to generate markdown for README
+function renderInstallation(text, images) {
+    // return
+}
+
+function renderCredits(names, links) {
+    // return
+}
+
+// generates Markdown to be passed into the writeFile function
 function generateMarkdown(data) {
 	const markDown = `
         # ${data.title} ${renderLicenseBadge(data.license)}
@@ -85,27 +106,29 @@ function generateMarkdown(data) {
         - [Usage](#usage)
         - [Credits](#credits)
         ${data.sections.includes('Features') ? '- [Features](#features)' : '' }
-        ${data.sections.includes('Contribute') ? '- [Contribute](#contribute)' : '' }
+        ${data.sections.includes('Contributing') ? '- [Contributing](#contributing)' : '' }
         ${data.sections.includes('Testing') ? '- [Testing](#testing)' : '' }
         ${data.sections.includes('Sponsors') ? '- [Sponsors](#sponsors)' : '' }
         - [Questions](#questions)
-        - [License](#license)
+        ${renderLicenseSection(data.license) ? '- [License](#license)' : ''}
 
         ## Installation
-        ${data.installation}
+        ${renderInstallation(data.installationText, data.installationImages)}
 
         ## Usage
         ${data.usage}
 
+        ## Credits
+        ${renderCredits(data.creditsNames, data.creditsLinks)}
+
         ${data.sections.includes('Features') ? '## Features\n' + data.features : '' }
 
-        ${data.sections.includes('Contribute') ? '## Contribute\n' + data.contribute : '' }
+        ${data.sections.includes('Contributing') ? '## Contributing\n' + data.Contributing : '' }
 
         ${data.sections.includes('Testing') ? '## Testing\n' + data.testing : '' }
 
         ${data.sections.includes('Sponsors') ? '## Sponsors\n' + renderSponsors(data.sponsorNames, data.sponsorLogos) : '' }
 
-        ## License
         ${renderLicenseSection(data.license)}
     `
 

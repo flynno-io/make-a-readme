@@ -11,7 +11,7 @@ const prompts = [
 		type: "checkbox",
 		message:
 			"Select what sections you want to include? (sections installation, usage, credits, questions, and license are included)",
-		choices: ["Badges", "Features", "Contribute", "Sponsors", "Testing"],
+		choices: ["Badges", "Features", "Contributing", "Sponsors", "Testing"],
 		default: null,
 	},
 	{
@@ -37,39 +37,53 @@ const prompts = [
 		prefix: "Installation (1of2):",
 	},
     {
-		name: "installationImgs",
-		type: "editor",
+		name: "installationImages",
+		type: "input",
 		message: "Add the path(s) to images (separated by commas) to include in the Installation section ",
 		prefix: "Installation (2of2):",
 	},
 	{
-		name: "usage",
+		name: "usageText",
 		type: "editor",
 		message: "How do you use the application? (provide numbered steps)",
 	},
-	{
-		name: "credits",
+    {
+		name: "usageImgs",
 		type: "input",
-		message: "Include the names of any contributors (click enter if 'none')",
-        prefix: "Credits (1of3)"
+		message: "Add the path(s) to the image(s) you want to include in order they should appear in your usage section",
+        when: (answers) => answers.usageText.includes('<img>') === -1 ? false : true,
+	},
+	{
+		name: "creditsNames",
+		type: "input",
+		message: "Include the names of any contributors, comma separated (click enter for none)",
+        prefix: "Credits (1of2)",
+        default: ''
+	},
+    {
+		name: "creditsLinks",
+		type: "input",
+		message: "Include the Github URLs for each of your contributors (comma separated) in the order you entered them above",
+        prefix: "Credits (2of2)",
+        when: (answers) => Boolean(answers.creditsNames)
+	},
+    {
+		type: "editor",
+		message: "What are the main features of the application?",
+		name: "features",
+		when: (answers) => answers.sections.includes("Features"),
 	},
 	{
 		type: "editor",
 		message: "How do you contribute to the project?",
-		name: "contribute",
-		when: (answers) => answers.sections.includes("Contribute"),
+		name: "Contributing",
+		when: (answers) => answers.sections.includes("Contributing"),
 	},
 	{
 		type: "editor",
 		message: "Describe how to test your application?",
 		name: "testing",
 		when: (answers) => answers.sections.includes("Testing"),
-	},
-	{
-		type: "editor",
-		message: "What are the main features of the application?",
-		name: "features",
-		when: (answers) => answers.sections.includes("Features"),
 	},
 	{
 		type: "checkbox",
