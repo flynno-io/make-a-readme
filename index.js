@@ -4,7 +4,7 @@ import fs from "node:fs"
 import generateMarkdown from "./utils/generateMarkdown.js"
 import licenseChoices from "./utils/licenseChoices.js"
 import badgeChoices from "./utils/badgeChoices.js"
-import { validEntry, validCommaSeparatedString, validEmail } from "./utils/validationFunc.js"
+import { validEntry, validCommaSeparatedString, validListOfImages, validEmail } from "./utils/validationFunc.js"
 
 // Collection questions for building the README.md file
 const prompts = [
@@ -53,7 +53,7 @@ const prompts = [
 		message:
 			"Add the file names of the images you want in the order you want them (comma separated)\n  Note: images must be in the path /assets/images/ to show correctly",
 		prefix: "Installation (2of2):",
-        validate: validCommaSeparatedString,
+        validate: validListOfImages,
 		when: (answers) => answers.installationText.includes("<img>"),
 	},
 	{
@@ -70,7 +70,7 @@ const prompts = [
 		message:
 			"Add the file names of the images you want in the order you want them (comma separated)\n  Note: images must be in the path /assets/images/ to show correctly",
 		prefix: "Usage (2of2):",
-        validate: validCommaSeparatedString,
+        validate: validListOfImages,
 		when: (answers) => answers.usageText.includes("<img>"),
 	},
 	{
@@ -78,9 +78,9 @@ const prompts = [
 		type: "input",
 		message:
 			"Include the names of any contributors, comma separated (click enter for none)",
-        default: null,
+        default: "None",
 		prefix: "Credits (1of2):",
-        validate: validCommaSeparatedString, // FIXME: allow the answer 'Null' to be evaluated and return true
+        validate: validCommaSeparatedString,
 	},
 	{
 		name: "creditsLinks",
@@ -103,7 +103,7 @@ const prompts = [
 		name: "Contributing",
 		type: "editor",
 		message: "What are the guidelines for contributing to this project?",
-        default: 'Please read the [Contributor Covenant](https://www.contributor-covenant.org/) before contributing. Checkout a branch, commit changes, and open a pull request.',
+        default: 'Please read the [Contributor Covenant](https://www.contributor-covenant.org/) before contributing. To begin contributing to the repo, please checkout a branch, commit changes, and open a pull request.',
 		prefix: "Contributing:",
         validate: validEntry,
 		when: (answers) => answers.sections.includes("Contributing"),
@@ -134,20 +134,11 @@ const prompts = [
 		when: (answers) => answers.sections.includes("Badges"),
 	},
 	{
-		name: "sponsorNames",
-		type: "input",
-		message: "Add your sponsors (comma separated)",
-		prefix: "Sponsors (1of2):",
-        validate: validCommaSeparatedString,
-		when: (answers) => answers.sections.includes("Sponsors"), // FIXME: update validation to allow for a single entry (no commas)
-	},
-	{
 		name: "sponsorLogos",
 		type: "input",
-		message:
-			"Add the file names of the logos you want in the sponsor order you added above (comma separated)\n  Note: Logos must be in the path /assets/images/ to show correctly",
-		prefix: "Sponsors (2of2):",
-        validate: validCommaSeparatedString,
+		message: "Add the logos of your sponsors (comma separated)\n Note: images must be in the path /assets/images/ to show correctly",
+		prefix: "Sponsors:",
+        validate: validListOfImages,
 		when: (answers) => answers.sections.includes("Sponsors"),
 	},
 	{
@@ -183,6 +174,8 @@ function init() {
 	inquirer.prompt(prompts).then((a) => {
         console.log(a)
 		const markDown = generateMarkdown(a)
+
+        // TODO: add a function to generate the LICENSE.txt file
 
 		// generate the README.md file
 		writeToFile("results/README.md", markDown)

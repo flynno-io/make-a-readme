@@ -5,7 +5,7 @@ function renderLicenseBadge(license) {
 	switch (license) {
 		case "Hippocratic 3.0":
 			licenseBadge =
-				"[![License: Hippocratic 3.0](https://img.shields.io/badge/License-Hippocratic_3.0-lightgrey.svg)](https://firstdonoharm.dev)"
+				"[![Hippocratic License HL3-FULL](https://img.shields.io/static/v1?label=Hippocratic%20License&message=HL3-FULL&labelColor=5e2751&color=bc8c3d)](https://firstdonoharm.dev/version/3/0/full.html)"
 			break
 		case "Apache2.0":
 			licenseBadge =
@@ -93,10 +93,6 @@ function renderTextAndImages(text, stringOfImages) {
 	let counter = 0
 
 	function splitImagesIntoArray(stringOfImages) {
-		// if no comma found, return the single value
-		if (!stringOfImages.includes(",")) {
-			return stringOfImages.trim()
-		}
 		let images = stringOfImages.split(",")
 		const imagesCleaned = images.map((img) => img.trim())
 		return imagesCleaned
@@ -115,7 +111,28 @@ function renderTextAndImages(text, stringOfImages) {
 }
 
 function renderCredits(names, links) {
-	return "Credits have been **RENDERED**"
+    if (names) {
+        const namesArray = names.split(",")
+        const linksArray = links.split(",")
+        const credits = namesArray.map((name, index) => {
+            return `- [${name}](${linksArray[index]})`
+        })
+        return credits.join("\n")
+    } else {
+        return ""
+    }
+}
+
+function renderSponsorLogos(logos) {
+    if (logos) {
+        const logosArray = logos.split(",")
+        const sponsorLogos = logosArray.map((logo) => {
+            return `![alt sponsor logo](/assets/images/${logo})`
+        })
+        return sponsorLogos.join("\n")
+    } else {
+        return ""
+    }
 }
 
 // generates Markdown to be passed into the writeFile function
@@ -177,6 +194,7 @@ function generateMarkdown(data) {
         }
 
         ## Credits
+        A special thanks to the following contributors:
         ${renderCredits(data.creditsNames, data.creditsLinks)}
 
         ${
@@ -199,9 +217,7 @@ function generateMarkdown(data) {
 
         ${
             data.sections.includes("Sponsors")
-                ? "## Sponsors\n" + data.sponsorLogos
-                    ? renderTextAndImages(data.sponsorNames, data.sponsorLogos)
-                    : data.sponsorNames
+                ? "## Sponsors\n" + renderSponsorLogos(data.sponsorLogos)
                 : ""
         }
 
