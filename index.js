@@ -6,6 +6,7 @@ import licenseChoices from "./utils/licenseChoices.js"
 import badgeChoices from "./utils/badgeChoices.js"
 import { validCommaSeparatedString, validEmail } from "./utils/validationFunc.js"
 
+// Collection questions for building the README.md file
 const prompts = [
 	{
 		name: "sections",
@@ -39,32 +40,32 @@ const prompts = [
 		name: "installationText",
 		type: "editor",
 		message:
-			"How do you install the application?\nTo include images, use the '<img>' tag as a placeholder.\n In the next step, you will specify which images to add.",
+			"How do you install the application?\n  To include images, use the '<img>' tag as a placeholder.\n  In the next step, you will specify which images to add.",
 		prefix: "Installation (1of2):",
 	},
 	{
 		name: "installationImages",
 		type: "input",
 		message:
-			"Add the file names of the images you want in the order you want them (comma separated)\nNote: images must be in the path /assets/images/ to show correctly",
+			"Add the file names of the images you want in the order you want them (comma separated)\n  Note: images must be in the path /assets/images/ to show correctly",
 		prefix: "Installation (2of2):",
-        validate: validCommaSeparatedString(input),
+        validate: validCommaSeparatedString,
 		when: (answers) => answers.installationText.includes("<img>"),
 	},
 	{
 		name: "usageText",
 		type: "editor",
 		message:
-			"How do you use the application?\nTo include images, use the '<img>' tag as a placeholder.\n In the next step, you will specify which images to add.",
+			"How do you use the application?\n  To include images, use the '<img>' tag as a placeholder.\n  In the next step, you will specify which images to add.",
 		prefix: "Usage (1of2):",
 	},
 	{
 		name: "usageImages",
 		type: "input",
 		message:
-			"Add the file names of the images you want in the order you want them (comma separated)\nNote: images must be in the path /assets/images/ to show correctly",
+			"Add the file names of the images you want in the order you want them (comma separated)\n  Note: images must be in the path /assets/images/ to show correctly",
 		prefix: "Usage (2of2):",
-        validate: validCommaSeparatedString(input),
+        validate: validCommaSeparatedString,
 		when: (answers) => answers.usageText.includes("<img>"),
 	},
 	{
@@ -73,7 +74,7 @@ const prompts = [
 		message:
 			"Include the names of any contributors, comma separated (click enter for none)",
 		prefix: "Credits (1of2):",
-        validate: validCommaSeparatedString(input),
+        validate: validCommaSeparatedString, // FIXME: allow the answer 'Null' to be evaluated and return true
 		default: null,
 	},
 	{
@@ -82,7 +83,7 @@ const prompts = [
 		message:
 			"Include the Github URLs for each of your contributors (comma separated) in the order you entered them above",
 		prefix: "Credits (2of2):",
-        validate: validCommaSeparatedString(input),
+        validate: validCommaSeparatedString,
 		when: (answers) => Boolean(answers.creditsNames),
 	},
 	{
@@ -119,16 +120,16 @@ const prompts = [
 		type: "input",
 		message: "Add your sponsors (comma separated)",
 		prefix: "Sponsors (1of2):",
-        validate: validCommaSeparatedString(input),
+        validate: validCommaSeparatedString,
 		when: (answers) => answers.sections.includes("Sponsors"),
 	},
 	{
 		name: "sponsorLogos",
 		type: "input",
 		message:
-			"Add the file names of the logos you want in the sponsor order you added above (comma separated)\nNote: Logos must be in the path /assets/images/ to show correctly",
+			"Add the file names of the logos you want in the sponsor order you added above (comma separated)\n  Note: Logos must be in the path /assets/images/ to show correctly",
 		prefix: "Sponsors (2of2):",
-        validate: validCommaSeparatedString(input),
+        validate: validCommaSeparatedString,
 		when: (answers) => answers.sections.includes("Sponsors"),
 	},
 	{
@@ -142,7 +143,7 @@ const prompts = [
 		message: "What email should questions be sent to?",
 		name: "email",
         prefix: "Questions:",
-		validate: validEmail(input),
+		validate: validEmail,
 	},
 ]
 
@@ -157,18 +158,17 @@ function writeToFile(fileName, data) {
 	})
 }
 
-// Application runner
+// application structure
 function init() {
 	// collect README.md details from the user
 	inquirer.prompt(prompts).then((a) => {
+        console.log(a)
 		const markDown = generateMarkdown(a)
-
-		console.log(a)
 
 		// generate the README.md file
 		writeToFile("results/README.md", markDown)
 	})
 }
 
-// Function call to initialize app
+// initialize app
 init()

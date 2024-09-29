@@ -2,12 +2,12 @@
 export const validCommaSeparatedString = (input) => {
     return new Promise((resolve, reject) => {
         // Regular expression for basic email validation
-        const commasSeparatedList = /^([^,\s]+)(,\s*[^,\s]+)*$/
+        const commasSeparatedList = /^([^,]+)(,\s*[^,]+)*$/
 
         if (commasSeparatedList.test(input)) {
             resolve(true) // Valid comma-separated list
         } else {
-            reject("Please enter a valid email address.") // Error message
+            reject("Please separate items by commas.") // Error message
         }
     })
 }
