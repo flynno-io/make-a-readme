@@ -121,7 +121,7 @@ function renderCredits(names, links) {
 // generates Markdown to be passed into the writeFile function
 function generateMarkdown(data) {
 	const markDown = `
-        # ${data.title} 
+        # ${data.title}
         ${renderLicenseBadge(data.license)}
         ${data.sections.includes("Badges") ? data.badges.join(" ") : ""}
 
@@ -132,16 +132,32 @@ function generateMarkdown(data) {
         - [Installation](#installation)
         - [Usage](#usage)
         - [Credits](#credits)
-        ${data.sections.includes("Features") ? "- [Features](#features)" : ""}
+        ${
+            data.sections.includes("Features")
+                ? "- [Features](#features)"
+                : ""
+        }
         ${
             data.sections.includes("Contributing")
                 ? "- [Contributing](#contributing)"
                 : ""
         }
-        ${data.sections.includes("Testing") ? "- [Testing](#testing)" : ""}
-        ${data.sections.includes("Sponsors") ? "- [Sponsors](#sponsors)" : ""}
+        ${
+            data.sections.includes("Testing")
+                ? "- [Testing](#testing)"
+                : ""
+        }
+        ${
+            data.sections.includes("Sponsors")
+                ? "- [Sponsors](#sponsors)"
+                : ""
+        }
         - [Questions](#questions)
-        ${renderLicenseSection(data.license) ? "- [License](#license)" : ""}
+        ${
+            renderLicenseSection(data.license)
+                ? "- [License](#license)"
+                : ""
+        }
 
         ## Installation
         ${
@@ -188,6 +204,10 @@ function generateMarkdown(data) {
                     : data.sponsorNames
                 : ""
         }
+
+        ## Questions
+        Please direct all questions to me, [${data.username}](https://github.com/${data.username}). 
+        Send me an email at ${data.email} with your name, email, and question(s). Thanks!
 
         ${renderLicenseSection(data.license)}
     `

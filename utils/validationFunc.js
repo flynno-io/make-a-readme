@@ -1,4 +1,14 @@
 
+export const validEntry = (input) => {
+    return new Promise((resolve, reject) => {
+        if (input) {
+            resolve(true) // Valid entry
+        } else {
+            reject("Please enter a response.") // Error message
+        }
+    })
+}
+
 export const validCommaSeparatedString = (input) => {
     return new Promise((resolve, reject) => {
         // Regular expression for basic email validation
