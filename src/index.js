@@ -257,7 +257,7 @@ function init() {
             createLicense(a.license)
 
             // generate the README.md file
-            createREADME("results/README.md", markDown)
+            createREADME("README.md", markDown)
         })
     } catch(err) {
         console.error(`error running app: ${err}`)
