@@ -32,9 +32,9 @@ From the root of the make-a-readme directory, launch the application with `npm r
 
 Next, you will answer all of the prompts after reading them carefully. 
 
-Finally, upon submitting your last prompt, the LICENSE.txt and README.md files will be created using your answers. Both files will be created at the ROOT of your directory.
+Finally, upon submitting your last prompt, the LICENSE.txt and README.md files will be created using your answers. Both files will be created in the src/results/ directory.
 
-WARNING: If you already have a README.md and/or LICENSE.txt file, these will be overwritten with the new files and user input.
+***WARNING***: If you already have a README.md and/or LICENSE.txt file, these will be overwritten with any subsequent runs of the application unless moved prior to running the tool.
 
 ## Credits
 I welcome contributions to our project. Please see the [Contributing](#contributing) section.

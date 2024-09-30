@@ -226,7 +226,7 @@ async function createLicense(license) {
         const data = await fs.readFile(`./licenses/${licenseName}.txt`, { encoding: "utf8"})
 
         // write the content to the LICENSE.txt file
-        await fs.writeFile("LICENSE.txt", data)
+        await fs.writeFile("./results/LICENSE.txt", data)
 
         console.log("Your LICENSE.txt file has been created successfully!")
     } catch(err) {
@@ -257,7 +257,7 @@ function init() {
             createLicense(a.license)
 
             // generate the README.md file
-            createREADME("README.md", markDown)
+            createREADME("./results/README.md", markDown)
         })
     } catch(err) {
         console.error(`error running app: ${err}`)
