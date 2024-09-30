@@ -136,8 +136,27 @@ function renderSponsorLogos(logos) {
 }
 
 function cleanMarkdown(markdown) {
-    const cleanedMarkdown = markdown.replace(/^ +/gm, "").replace(/\n{2,}/g, '\n') // remove leading spaces and double new lines
+    const cleanedMarkdown = markdown.replace(/^ +/gm, "").replace(/\n{2,}(?!\S)/g, '\n') // remove leading spaces and double new lines
     return cleanedMarkdown
+}
+
+function renderTableOfContents(data) {
+    const sections = data.sections
+    const allSections = sections.concat(["Installation", "Usage", "Credits", "Questions", data.license !== 'None' ? "License" : ""]) // add sections that are always included
+
+    const tableOfContents = []
+
+    if (allSections.includes("Installation")) {tableOfContents.push("- [Installation](#installation)")}
+    if (allSections.includes("Usage")) {tableOfContents.push("- [Usage](#usage)")}
+    if (allSections.includes("Features")) {tableOfContents.push("- [Features](#features)")}
+    if (allSections.includes("Testing")) {tableOfContents.push("- [Testing](#testing)")}
+    if (allSections.includes("Credits")) {tableOfContents.push("- [Credits](#credits)")}
+    if (allSections.includes("Sponsors")) {tableOfContents.push("- [Sponsors](#sponsors)")}
+    if (allSections.includes("Contributing")) {tableOfContents.push("- [Contributing](#contributing)")}
+    if (allSections.includes("Questions")) {tableOfContents.push("- [Questions](#questions)")}
+    if (allSections.includes("License")) {tableOfContents.push("- [License](#license)")}
+
+    return tableOfContents.join("\n")
 }
 
 // generates Markdown to be passed into the writeFile function
@@ -151,39 +170,7 @@ function generateMarkdown(data) {
         ${data.description}
 
         ## Table of Contents
-        - [Installation](#installation)
-        - [Usage](#usage)
-        ${data.creditsNames !== "None"
-            ?"- [Credits](#credits)"
-            : ""
-        }
-        - [Credits](#credits)
-        ${
-            data.sections.includes("Features")
-                ? "- [Features](#features)"
-                : ""
-        }
-        ${
-            data.sections.includes("Contributing")
-                ? "- [Contributing](#contributing)"
-                : ""
-        }
-        ${
-            data.sections.includes("Testing")
-                ? "- [Testing](#testing)"
-                : ""
-        }
-        ${
-            data.sections.includes("Sponsors")
-                ? "- [Sponsors](#sponsors)"
-                : ""
-        }
-        - [Questions](#questions)
-        ${
-            renderLicenseSection(data.license)
-                ? "- [License](#license)"
-                : ""
-        }
+        ${renderTableOfContents(data)}
 
         ## Installation
         ${
@@ -202,10 +189,11 @@ function generateMarkdown(data) {
                 : data.usageText
         }
 
+        ## Credits
         ${
             data.creditsNames !== "None"
-                ? "## Credits\n" + "A special thanks to the following contributors:\n" + renderCredits(data.creditsNames, data.creditsLinks)
-                : ""
+                ? "A special thanks to the following contributors:\n" + renderCredits(data.creditsNames, data.creditsLinks)
+                : "I welcome contributions to our project. Please see the [Contributing](#contributing) section."
         }
         
         
