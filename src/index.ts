@@ -1,6 +1,6 @@
 // /index.js
 import inquirer from "inquirer"
-import fs from 'node:fs/promises'
+import * as fs from "node:fs/promises"
 import generateMarkdown from "./utils/generateMarkdown.js"
 import licenseChoices from "./utils/licenseChoices.js"
 import badgeChoices from "./utils/badgeChoices.js"
@@ -19,7 +19,7 @@ const prompts = [
 		message:
 			"Select what sections you want to include? (sections installation, usage, credits, questions, and license are included)",
 		choices: ["Badges", "Features", "Contributing", "Sponsors", "Testing"],
-		default: null,
+		default: [null],
 		prefix: "Sections",
 	},
 	{
@@ -59,7 +59,7 @@ const prompts = [
 			"Add the file names of the images you want in the order you want them (comma separated)\n  Note: images must be in the path /assets/images/ to show correctly",
 		prefix: "Installation (2of2):",
 		validate: validListOfImages,
-		when: (answers) => answers.installationText.includes("<img>"),
+		when: (answers: any) => answers.installationText.includes("<img>"),
 	},
 	{
 		name: "usageText",
@@ -76,7 +76,7 @@ const prompts = [
 			"Add the file names of the images you want in the order you want them (comma separated)\n  Note: images must be in the path /assets/images/ to show correctly",
 		prefix: "Usage (2of2):",
 		validate: validListOfImages,
-		when: (answers) => answers.usageText.includes("<img>"),
+		when: (answers: any) => answers.usageText.includes("<img>"),
 	},
 	{
 		name: "creditsNames",
@@ -94,7 +94,7 @@ const prompts = [
 			"Include the Github URLs for each of your contributors (comma separated) in the order you entered them above",
 		prefix: "Credits (2of2):",
 		validate: validCommaSeparatedString,
-		when: (answers) => Boolean((answers.creditsNames === "None") === false),
+		when: (answers: any) => Boolean((answers.creditsNames === "None") === false),
 	},
 	{
 		name: "features",
@@ -102,7 +102,7 @@ const prompts = [
 		message: "What are the main features of the application?",
 		prefix: "Features:",
 		validate: validEntry,
-		when: (answers) => answers.sections.includes("Features"),
+		when: (answers: any) => answers.sections.includes("Features"),
 	},
 	{
 		name: "contributing",
@@ -112,7 +112,7 @@ const prompts = [
 			"Please read the [Contributor Covenant](https://www.contributor-covenant.org/) before contributing. To begin contributing to the repo, please checkout a branch, commit changes, and open a pull request.",
 		prefix: "Contributing:",
 		validate: validEntry,
-		when: (answers) => answers.sections.includes("Contributing"),
+		when: (answers: any) => answers.sections.includes("Contributing"),
 	},
 	{
 		name: "testing",
@@ -120,7 +120,7 @@ const prompts = [
 		message: "Outline how to test your application?",
 		prefix: "Testing:",
 		validate: validEntry,
-		when: (answers) => answers.sections.includes("Testing"),
+		when: (answers: any) => answers.sections.includes("Testing"),
 	},
 	{
 		name: "badges",
@@ -128,7 +128,7 @@ const prompts = [
 		message: "What badges do you want?",
 		choices: badgeChoices,
 		prefix: "Badges:",
-		valid: (input) => {
+		valid: (input: string): Promise<boolean> => {
 			// custom validation function for Badges
 			return new Promise((resolve, reject) => {
 				if (input.length > 0) {
@@ -138,7 +138,7 @@ const prompts = [
 				}
 			})
 		},
-		when: (answers) => answers.sections.includes("Badges"),
+		when: (answers: any) => answers.sections.includes("Badges"),
 	},
 	{
 		name: "sponsorLogos",
@@ -147,7 +147,7 @@ const prompts = [
 			"Add the logos of your sponsors (comma separated)\n Note: images must be in the path /assets/images/ to show correctly",
 		prefix: "Sponsors:",
 		validate: validListOfImages,
-		when: (answers) => answers.sections.includes("Sponsors"),
+		when: (answers: any) => answers.sections.includes("Sponsors"),
 	},
 	{
 		name: "username",
@@ -167,7 +167,7 @@ const prompts = [
 
 // create the LICENSE.txt file
 
-async function createLicense(license) {
+async function createLicense(license: string): Promise<void> {
     let licenseName = ""
 
 	// get the license type
@@ -223,10 +223,10 @@ async function createLicense(license) {
 
     try {
         // read the content of the license file
-        const data = await fs.readFile(`./licenses/${licenseName}.txt`, { encoding: "utf8"})
+        const data = await fs.readFile(`/built/licenses/${licenseName}.txt`, { encoding: "utf8"})
 
         // write the content to the LICENSE.txt file
-        await fs.writeFile("./results/LICENSE.txt", data)
+        await fs.writeFile("/built/results/LICENSE.txt", data)
 
         console.log("Your LICENSE.txt file has been created successfully!")
     } catch(err) {
@@ -235,7 +235,7 @@ async function createLicense(license) {
 }
 
 // write the markdown to the README.md file
-async function createREADME(fileName, data) {
+async function createREADME(fileName: string, data: string): Promise<void> {
     try {
         // write the README.md file
         await fs.writeFile(fileName, data)
@@ -246,7 +246,7 @@ async function createREADME(fileName, data) {
 }
 
 // application structure
-function init() {
+function init(): void {
     try {
         // collect README.md details from the user
         inquirer.prompt(prompts).then((a) => {
@@ -257,7 +257,7 @@ function init() {
             createLicense(a.license)
 
             // generate the README.md file
-            createREADME("./results/README.md", markDown)
+            createREADME("/built/results/README.md", markDown)
         })
     } catch(err) {
         console.error(`error running app: ${err}`)

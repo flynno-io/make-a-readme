@@ -1,4 +1,4 @@
-const licenseChoices = [
+const licenseChoices: object[] = [
     {
 		name: "None",
         value: '',

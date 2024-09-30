@@ -1,6 +1,26 @@
 // utils/generateMarkdown.js
 
-function renderLicenseBadge(license) {
+interface Answers {
+    sections: string[],
+    badges: string[],
+    license: string,
+    title: string,
+    description: string,
+    installationText: string,
+    installationImages?: string,
+    usageText: string,
+    usageImages?: string,
+    creditsNames: string,
+    creditsLinks?: string | undefined,
+    features?: string,
+    testing?: string,
+    contributing?: string,
+    sponsorLogos?: string,
+    username: string,
+    email: string
+}
+
+function renderLicenseBadge(license: string): string {
 	let licenseBadge
 	switch (license) {
 		case "Hippocratic 3.0":
@@ -69,7 +89,7 @@ function renderLicenseBadge(license) {
 	return licenseBadge
 }
 
-function renderLicenseLink(license) {
+function renderLicenseLink(license: string): string {
 	if (license) {
 		return `[${license}](LICENSE.txt)`
 	} else {
@@ -77,7 +97,7 @@ function renderLicenseLink(license) {
 	}
 }
 
-function renderLicenseSection(license) {
+function renderLicenseSection(license: string): string {
 	if (license) {
 		return `
             ## License
@@ -88,11 +108,11 @@ function renderLicenseSection(license) {
 	}
 }
 
-function renderTextAndImages(text, stringOfImages) {
+function renderTextAndImages(text: string, stringOfImages: string): string {
 	let str = text
 	let counter = 0
 
-	function splitImagesIntoArray(stringOfImages) {
+	function splitImagesIntoArray(stringOfImages: string): string[] {
 		let images = stringOfImages.split(",")
 		const imagesCleaned = images.map((img) => img.trim())
 		return imagesCleaned
@@ -110,7 +130,7 @@ function renderTextAndImages(text, stringOfImages) {
     return str
 }
 
-function renderCredits(names, links) {
+function renderCredits(names: string, links: any): string {
     if (names) {
         const namesArray = names.split(",")
         const linksArray = links.split(",")
@@ -123,7 +143,7 @@ function renderCredits(names, links) {
     }
 }
 
-function renderSponsorLogos(logos) {
+function renderSponsorLogos(logos: string): string {
     if (logos) {
         const logosArray = logos.split(",")
         const sponsorLogos = logosArray.map((logo) => {
@@ -135,15 +155,13 @@ function renderSponsorLogos(logos) {
     }
 }
 
-function cleanMarkdown(markdown) {
+function cleanMarkdown(markdown: string): string {
     const cleanedMarkdown = markdown.replace(/^ +/gm, "").replace(/\n{2,}(?!\S)/g, '\n') // remove leading spaces and double new lines
     return cleanedMarkdown
 }
 
-function renderTableOfContents(data) {
-    const sections = data.sections
-    const allSections = sections.concat(["Description", "Installation", "Usage", "Credits", "Questions", data.license !== 'None' ? "License" : ""]) // add sections that are always included
-
+function renderTableOfContents(data: Answers): string {
+    const allSections = ["Description", "Installation", "Usage", "Credits", "Questions"].concat(data.sections)
     const tableOfContents = []
 
     if (allSections.includes("Description")) {tableOfContents.push("- [Description](#description)")}
@@ -161,10 +179,17 @@ function renderTableOfContents(data) {
 }
 
 // generates Markdown to be passed into the writeFile function
-function generateMarkdown(data) {
+function generateMarkdown(data: Answers): string {
 	const markDown = `
         # ${data.title}
-        ${data.sections.includes("Badges") ? data.badges.join(" ") : ""}\n
+        ${
+            data.sections
+            ?data.sections.includes("Badges")
+                ? data.badges.join(" ")
+                : ""
+            : ""
+        }
+        
         ${renderLicenseBadge(data.license)}
 
         ## Description
@@ -217,7 +242,7 @@ function generateMarkdown(data) {
 
         ${
             data.sections.includes("Sponsors")
-                ? "## Sponsors\n" + renderSponsorLogos(data.sponsorLogos)
+                ? "## Sponsors\n" + renderSponsorLogos(data.sponsorLogos? data.sponsorLogos : "")
                 : ""
         }
 

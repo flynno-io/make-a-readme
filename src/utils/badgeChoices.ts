@@ -1,4 +1,7 @@
-const badgeChoices = [
+const badgeChoices: {
+    name: string
+    value: string
+}[] = [
 	{
 		name: "JavaScript",
 		value:

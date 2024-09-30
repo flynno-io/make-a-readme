@@ -1,5 +1,5 @@
 
-export const validEntry = (input) => {
+export const validEntry = (input: string): Promise<boolean> => {
     return new Promise((resolve, reject) => {
         if (input) {
             resolve(true) // Valid entry
@@ -9,7 +9,7 @@ export const validEntry = (input) => {
     })
 }
 
-export const validListOfImages = (input) => {
+export const validListOfImages = (input: string): Promise<boolean> => {
     return new Promise((resolve, reject) => {
         // Regular expression to validate a comma-separated list of image file names
         const imageFiles = /^([\w]+\.(jpg|jpeg|png|gif|bmp|webp|tiff))(,\s*[\w]+\.(jpg|jpeg|png|gif|bmp|webp|tiff))*$/
@@ -22,7 +22,7 @@ export const validListOfImages = (input) => {
     })
 }
 
-export const validCommaSeparatedString = (input) => {
+export const validCommaSeparatedString = (input: string): Promise<boolean> => {
     return new Promise((resolve, reject) => {
         // Regular expression for basic email validation
         const commasSeparatedList = /^([^,]+)(,\s*[^,]+)*$/
@@ -42,7 +42,7 @@ export const validCommaSeparatedString = (input) => {
     })
 }
 
-export const validEmail = (input) => {
+export const validEmail = (input: string): Promise<boolean> => {
     return new Promise((resolve, reject) => {
         // Regular expression for basic email validation
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
