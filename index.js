@@ -167,7 +167,7 @@ const prompts = [
 
 // create the LICENSE.txt file
 
-async function createLicenseFile(license) {
+async function createLicense(license) {
     let licenseName = ""
 
 	// get the license type
@@ -235,7 +235,7 @@ async function createLicenseFile(license) {
 }
 
 // write the markdown to the README.md file
-async function writeToFile(fileName, data) {
+async function createREADME(fileName, data) {
     try {
         // write the README.md file
         await fs.writeFile(fileName, data)
@@ -254,10 +254,10 @@ function init() {
             const markDown = generateMarkdown(a)
 
             // generate the LICENSE.txt file
-            createLicenseFile(a.license)
+            createLicense(a.license)
 
             // generate the README.md file
-            writeToFile("results/README.md", markDown)
+            createREADME("results/README.md", markDown)
         })
     } catch(err) {
         console.error(`error running app: ${err}`)
