@@ -5,6 +5,7 @@ import generateMarkdown from "./utils/generateMarkdown.js";
 import licenseChoices from "./utils/licenseChoices.js";
 import badgeChoices from "./utils/badgeChoices.js";
 import { validEntry, validCommaSeparatedString, validListOfImages, validEmail, } from "./utils/validationFunc.js";
+const __dirname = import.meta.dirname;
 // Collection questions for building the README.md file
 const prompts = [
     {
@@ -204,10 +205,11 @@ async function createLicense(license) {
             licenseName = "mit";
     }
     try {
+        console.log("Current directory:", process.cwd()); // print the current directory
         // read the content of the license file
-        const data = await fs.readFile(`./licenses/${licenseName}.txt`, { encoding: "utf8" });
+        const data = await fs.readFile(__dirname + `/licenses/${licenseName}.txt`, { encoding: "utf8" });
         // write the content to the LICENSE.txt file
-        await fs.writeFile("./results/LICENSE.txt", data);
+        await fs.writeFile(__dirname + "/results/LICENSE.txt", data);
         console.log("Your LICENSE.txt file has been created successfully!");
     }
     catch (err) {
@@ -235,7 +237,8 @@ function init() {
             // generate the LICENSE.txt file
             createLicense(a.license);
             // generate the README.md file
-            createREADME("./results/README.md", markDown);
+            console.log("Current directory:", process.cwd()); // print the current directory
+            createREADME(__dirname + "/results/README.md", markDown);
         });
     }
     catch (err) {
