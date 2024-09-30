@@ -61,7 +61,7 @@ const licenseChoices = [
 	},
 	{
 		name: "Unlicense",
-        value: "Uni",
+        value: "Unlicense",
 	},
 ]
 

@@ -135,6 +135,11 @@ function renderSponsorLogos(logos) {
     }
 }
 
+function cleanMarkdown(markdown) {
+    const cleanedMarkdown = markdown.replace(/^ +/gm, "").replace(/\n{2,}/g, '\n') // remove leading spaces and double new lines
+    return cleanedMarkdown
+}
+
 // generates Markdown to be passed into the writeFile function
 function generateMarkdown(data) {
 	const markDown = `
@@ -148,6 +153,10 @@ function generateMarkdown(data) {
         ## Table of Contents
         - [Installation](#installation)
         - [Usage](#usage)
+        ${data.creditsNames !== "None"
+            ?"- [Credits](#credits)"
+            : ""
+        }
         - [Credits](#credits)
         ${
             data.sections.includes("Features")
@@ -193,9 +202,13 @@ function generateMarkdown(data) {
                 : data.usageText
         }
 
-        ## Credits
-        A special thanks to the following contributors:
-        ${renderCredits(data.creditsNames, data.creditsLinks)}
+        ${
+            data.creditsNames !== "None"
+                ? "## Credits\n" + "A special thanks to the following contributors:\n" + renderCredits(data.creditsNames, data.creditsLinks)
+                : ""
+        }
+        
+        
 
         ${
             data.sections.includes("Features")
@@ -205,7 +218,7 @@ function generateMarkdown(data) {
 
         ${
             data.sections.includes("Contributing")
-                ? "## Contributing\n" + data.Contributing
+                ? "## Contributing\n" + data.contributing
                 : ""
         }
 
@@ -227,8 +240,7 @@ function generateMarkdown(data) {
 
         ${renderLicenseSection(data.license)}
     `
-
-	return markDown.replace(/^ +/gm, "")
+    return cleanMarkdown(markDown)
 }
 
 export default generateMarkdown
