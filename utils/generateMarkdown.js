@@ -142,19 +142,20 @@ function cleanMarkdown(markdown) {
 
 function renderTableOfContents(data) {
     const sections = data.sections
-    const allSections = sections.concat(["Installation", "Usage", "Credits", "Questions", data.license !== 'None' ? "License" : ""]) // add sections that are always included
+    const allSections = sections.concat(["Description", "Installation", "Usage", "Credits", "Questions", data.license !== 'None' ? "License" : ""]) // add sections that are always included
 
     const tableOfContents = []
 
+    if (allSections.includes("Description")) {tableOfContents.push("- [Description](#description)")}
     if (allSections.includes("Installation")) {tableOfContents.push("- [Installation](#installation)")}
     if (allSections.includes("Usage")) {tableOfContents.push("- [Usage](#usage)")}
+    if (allSections.includes("License")) {tableOfContents.push("- [License](#license)")}
     if (allSections.includes("Features")) {tableOfContents.push("- [Features](#features)")}
     if (allSections.includes("Testing")) {tableOfContents.push("- [Testing](#testing)")}
     if (allSections.includes("Credits")) {tableOfContents.push("- [Credits](#credits)")}
     if (allSections.includes("Sponsors")) {tableOfContents.push("- [Sponsors](#sponsors)")}
     if (allSections.includes("Contributing")) {tableOfContents.push("- [Contributing](#contributing)")}
     if (allSections.includes("Questions")) {tableOfContents.push("- [Questions](#questions)")}
-    if (allSections.includes("License")) {tableOfContents.push("- [License](#license)")}
 
     return tableOfContents.join("\n")
 }
@@ -163,8 +164,8 @@ function renderTableOfContents(data) {
 function generateMarkdown(data) {
 	const markDown = `
         # ${data.title}
+        ${data.sections.includes("Badges") ? data.badges.join(" ") : ""}\n
         ${renderLicenseBadge(data.license)}
-        ${data.sections.includes("Badges") ? data.badges.join(" ") : ""}
 
         ## Description
         ${data.description}
@@ -195,8 +196,6 @@ function generateMarkdown(data) {
                 ? "A special thanks to the following contributors:\n" + renderCredits(data.creditsNames, data.creditsLinks)
                 : "I welcome contributions to our project. Please see the [Contributing](#contributing) section."
         }
-        
-        
 
         ${
             data.sections.includes("Features")
@@ -223,8 +222,7 @@ function generateMarkdown(data) {
         }
 
         ## Questions
-        Please direct all questions to me, [${data.username}](https://github.com/${data.username}). 
-        Send me an email at ${data.email} with your name, email, and question(s). Thanks!
+        Please direct all questions to me, [${data.username}](https://github.com/${data.username}) on Github. You can also reach me by email at ${data.email}. Please include your name, email and, questions in your email. Thanks!
 
         ${renderLicenseSection(data.license)}
     `
